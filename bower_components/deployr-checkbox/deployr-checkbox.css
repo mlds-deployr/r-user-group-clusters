@@ -1,0 +1,16 @@
+:host {
+    display: block;
+}
+
+paper-checkbox {
+    padding: 20px 20px 20px 0;
+}
+
+paper-checkbox.blue::shadow #ink[checked] {
+    color: #BBDEFB;
+}
+
+paper-checkbox.blue::shadow #checkbox.checked {
+    background-color: #2196F3;
+    border-color: #2196F3;
+}

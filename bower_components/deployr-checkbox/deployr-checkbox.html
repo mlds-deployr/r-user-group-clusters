@@ -1,0 +1,117 @@
+<!--
+  Copyright (C) 2010-2015 by Revolution Analytics Inc.
+  Released under the Apache License 2.0
+  http://www.apache.org/licenses/LICENSE-2.0
+-->
+<!--
+@group DeployR Elements
+@element deployr-checkbox
+@status POC
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../deployr-globals/deployr-globals.html">
+<polymer-element name="deployr-checkbox" attributes="rscript rcode rinput rtype watch value label css">
+    <template>
+        <link rel="stylesheet" href="deployr-checkbox.css">
+        <deployr-globals id="rscript"></deployr-globals>
+        <deployr-globals id="rcode"></deployr-globals>
+        <core-label horizontal layout>
+            <paper-checkbox class="{{css.color}}" on-change="{{changeHandler}}"></paper-checkbox>
+            <div vertical layout>
+                <h4>{{label}}</h4>
+            </div>
+        </core-label>
+    </template>
+    <script>
+    Polymer('deployr-checkbox', {
+
+        /**
+         * The named `rcode` execution context.
+         *
+         * @attribute rcode
+         * @type string
+         * @default null
+         */
+        rcode: null,
+
+        /**
+         * The named `rscript` execution context.
+         *
+         * @attribute rscript
+         * @type string
+         * @default null
+         */
+        rscript: null,
+
+        /**
+         * Defines the name of expected R input that is used in either the 
+         * `rscript` or the `rcode` execution context. 
+         * 
+         * @attribute rinput
+         * @type string
+         * @default null
+         */
+        rinput: null,
+
+        /**
+         * Describes the R type of the `rinput` being passed to the `rscript` or 
+         * the `rcode` execution context. 
+         * 
+         * @attribute rtype
+         * @type string
+         * @default logical
+         */
+        rtype: 'logical',
+
+        /**
+         * If true, any `on-change` event will execute the `rscript` or `rcode`
+         * bound to this control.
+         *
+         * @attribute watch
+         * @type boolean
+         * @default false
+         */
+        watch: false,
+
+        /**
+         * Provides a version of the `<label>` element.
+         *
+         * @attribute label
+         * @type string
+         * @default ''
+         */
+        label: '',
+
+        /**
+         * Defines the CSS theme for theis control.
+         *
+         * @attribute css
+         * @type object
+         * @default { color: 'blue' }
+         */
+        css: {
+            color: 'blue'
+        },
+        value: false,
+
+        ready: function() {
+            var name = this.rscript || this.rcode,
+                model = this.$[this.rscript ? 'rscript' : 'rcode'].values;
+
+            // set rinput and rtype
+            model[name].inputs[this.rinput] = this.value;
+            model[name].rtypes[this.rinput] = this.rtype;
+
+            if (this.watch) {
+                model[name].watches.push(this.rinput);
+            }
+        },
+
+        changeHandler: function(e, detail, sender) {
+            var model = this.$[this.rscript ? 'rscript' : 'rcode'].values;
+            model[this.rscript || this.rcode].inputs[this.rinput] = sender.checked;
+        }
+    });
+    </script>
+</polymer-element>

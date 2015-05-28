@@ -1,0 +1,1 @@
+!function(n){"use strict";var t=n.querySelector("#app");t.appName="DeployR Demo",t.config={},t.addEventListener("template-bound",function(){}),window.sharedMixin={outputs:{rscript:null,rcode:null,routput:null},inputs:{rscript:null,rcode:null,rinput:null}}}(wrap(document));
